@@ -14,8 +14,8 @@ return new class extends Migration
     Schema::create('attendances', function (Blueprint $table) {
         $table->id();
         $table->foreignId('user_id');
-        $table->string('key')->unique();
-        $table->text('value')->nullable();
+        $table->decimal('latitude', 10, 8)->nullable();  // Adjust precision if needed
+        $table->decimal('longitude', 11, 8)->nullable(); // Adjust precision if needed
         $table->timestamps();
     });
 }
