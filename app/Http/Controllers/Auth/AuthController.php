@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helper\ApiResponse;
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\APIController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLogin;

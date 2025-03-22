@@ -36,7 +36,7 @@ class AttendanceController extends Controller
     \Log::info('Attendance request received', $request->all()); // Log request
 
     $request->validate([
-        'employee_id' => 'required|string',
+        'user_id' => 'required|string',
         'latitude' => 'required|numeric',
         'longitude' => 'required|numeric',
     ]);
@@ -74,7 +74,7 @@ class AttendanceController extends Controller
     }
 
     $attendance = Attendance::create([
-        'employee_id' => $request->employee_id,
+        'user_id' => $request->user_id,
         'latitude' => $request->latitude,
         'longitude' => $request->longitude,
     ]);

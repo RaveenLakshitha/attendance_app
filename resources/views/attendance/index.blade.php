@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Employee ID</th>
+                <th>User ID</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
                 <th>Checked In At</th>
@@ -17,7 +17,7 @@
         <tbody>
             @foreach($attendances as $attendance)
             <tr>
-                <td>{{ $attendance->employee_id }}</td>
+                <td>{{ $attendance->user_id }}</td>
                 <td>{{ $attendance->latitude }}</td>
                 <td>{{ $attendance->longitude }}</td>
                 <td>{{ $attendance->checked_in_at }}</td>

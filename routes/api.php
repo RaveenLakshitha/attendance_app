@@ -24,4 +24,4 @@ Route::controller( AuthController::class)->group(function(){
     });
 });
 
-Route::resource('attendance', AttendanceController::class)->middleware('auth::api');
+Route::resource('attendance', AttendanceController::class)->middleware('auth:api');

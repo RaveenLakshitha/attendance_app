@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\AuthRegister;
+use App\Models\User;
 use App\Repository\AuthRepository;
 use Auth;
 use Hash;
@@ -38,11 +39,26 @@ class AuthService
      */
     public function userLogin($request)
     {
+        $existingUser = User::where('device_id', $request->device_id)->first();
+
+        if ($existingUser) {
+            return response()->json(['message' => 'This device is already in use. Login not allowed.'], 403);
+        }
+
         if(!(Auth::attempt(['email'=> $request['email'], 'password' => $request['password']]))){
             return false;
         }
 
         $authUser = Auth::user();
+
+        // if ($authUser->device_id) {
+        //     return response()->json(['message' => 'This account is already linked to another device.'], 403);
+        // }
+
+        if (!$authUser->device_id) {
+            $authUser->update(['device_id' => $request->device_id]);
+        }
+        
         $token = $authUser->createToken('token')->accessToken;
 
         $user = [
@@ -67,5 +83,12 @@ class AuthService
             return true;
         }
         return false;
+    }
+
+    /**
+     * Function: getAuthUser
+     */
+    public function getAuthUser() {
+        return Auth::user();
     }
 }

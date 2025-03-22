@@ -13,10 +13,8 @@ return new class extends Migration
 {
     Schema::create('attendances', function (Blueprint $table) {
         $table->id();
-        $table->string('employee_id'); // Store employee ID
-        $table->decimal('latitude', 10, 7);
-        $table->decimal('longitude', 10, 7);
-        $table->timestamp('checked_in_at')->useCurrent();
+        $table->string('key')->unique();
+        $table->text('value')->nullable();
         $table->timestamps();
     });
 }
