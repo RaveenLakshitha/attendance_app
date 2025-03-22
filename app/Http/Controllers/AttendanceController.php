@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LocationHelper;
-use App\Models\attendance;
+use App\Models\Attendance;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
