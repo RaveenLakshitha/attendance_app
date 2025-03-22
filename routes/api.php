@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:api');
+})->middleware('auth::api');
 
 Route::controller( AuthController::class)->group(function(){
     Route::prefix('auth')->name('auth.')->group(function(){
@@ -17,11 +17,11 @@ Route::controller( AuthController::class)->group(function(){
         Route::post('login','login')->name('login');
 
         # Auth Middleware Routes
-        Route::middleware(['auth:api'])->group(function(){
+        Route::middleware(['auth::api'])->group(function(){
             Route::get('profile', 'userProfile')->name('profile');
             Route::get('logout', 'logout')->name('logout');
         });
     });
 });
 
-Route::resource('attendance', AttendanceController::class)->middleware('auth:api');
+Route::resource('attendance', AttendanceController::class)->middleware('auth::api');
