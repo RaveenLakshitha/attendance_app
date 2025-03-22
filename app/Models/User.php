@@ -52,7 +52,7 @@ class User extends Authenticatable
      * Function: todos
      * @relationType: hasMany
      */
-    public function attendance()
+    public function Attendance()
     {
         return $this->hasMany(Attendance::class, 'user_id', 'id');
     }
