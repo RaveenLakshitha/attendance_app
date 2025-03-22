@@ -13,6 +13,7 @@ return new class extends Migration
 {
     Schema::create('attendances', function (Blueprint $table) {
         $table->id();
+        $table->foreignId('user_id');
         $table->string('key')->unique();
         $table->text('value')->nullable();
         $table->timestamps();
