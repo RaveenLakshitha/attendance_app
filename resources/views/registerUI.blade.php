@@ -102,7 +102,7 @@
                         </div>
                         <div id="error-msg" class="text-danger text-center"></div>
                         <div class="mb-3 d-grid">
-                            <button type="button" class="btn btn-secondary" onclick="window.location.href='https://attendance-app-main-bzzr3a.laravel.cloud/loginUI'">Back to Login</button>
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI'">Back to Login</button>
                         </div>
                     </form>
                 </div>
@@ -118,14 +118,14 @@
 
             console.log(deviceId);
             $.ajax({
-                url: 'https://attendance-app-main-bzzr3a.laravel.cloud/api/auth/register',
+                url: 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/auth/register',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ name: name, email: email, password: password, device_id: deviceId }),
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('Registration successful! Please log in.');
-                        window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
+                        window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
                     }
                 },
                 error: function(xhr) {
