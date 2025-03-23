@@ -117,7 +117,6 @@
                 contentType: 'application/json',
                 data: JSON.stringify({ email: email, password: password, device_id: deviceId }),
                 success: function(response) {
-                    console.log(response.data.token);
                     if (response.data.token) {
                         localStorage.setItem('authToken', response.data.token);
                         window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/dashboard';

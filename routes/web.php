@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -21,6 +22,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+
+Auth::routes();
+
+Route::get('/users', [UserController::class, 'index'])->name('users');
+Route::post('/users/{id}/clear-device-id', [UserController::class, 'clearDeviceId'])->name('users.clearDeviceId');
+
+Auth::routes();
+
+Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances');
 
 Auth::routes();
 

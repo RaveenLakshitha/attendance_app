@@ -14,7 +14,12 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        return view('attendance_user_system/login');
+        $attendances = Attendance::join('users', 'attendances.user_id', '=', 'users.id')
+        ->select('attendances.*', 'users.name as user_name')
+        ->orderBy('checked_in_at', 'desc')
+        ->get();
+
+        return view('attendanceDetails', compact('attendances'));
     }
 
     /**

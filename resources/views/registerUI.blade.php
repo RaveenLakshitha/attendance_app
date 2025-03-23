@@ -123,8 +123,7 @@
                 contentType: 'application/json',
                 data: JSON.stringify({ name: name, email: email, password: password, device_id: deviceId }),
                 success: function(response) {
-                    console.log(response);
-                    if (response.success) {
+                    if (response.status === 'success') {
                         alert('Registration successful! Please log in.');
                         window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
                     }
