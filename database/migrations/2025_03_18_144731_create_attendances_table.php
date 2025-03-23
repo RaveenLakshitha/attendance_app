@@ -16,6 +16,7 @@ return new class extends Migration
         $table->foreignId('user_id');
         $table->decimal('latitude', 10, 8)->nullable();  // Adjust precision if needed
         $table->decimal('longitude', 11, 8)->nullable(); // Adjust precision if needed
+        $table->timestamp('checked_in_at')->nullable();
         $table->timestamps();
     });
 }
