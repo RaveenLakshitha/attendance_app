@@ -26,6 +26,12 @@ class AuthService
      */
     public function authRegister($request)
     {
+        $existingUser = User::where('device_id', $request->device_id)->first();
+
+        if ($existingUser) {
+            return response()->json(['message' => 'This device is already in use. Registration not allowed.'], 403);
+        }
+
         $request = $request->all();
         $request['password'] = Hash::make(($request['password']));
 
@@ -39,26 +45,35 @@ class AuthService
      */
     public function userLogin($request)
     {
-        $existingUser = User::where('device_id', $request->device_id)->first();
+        // Find user by email
+        $authUser = User::where('email', $request->email)->first();
 
-        if ($existingUser) {
-            return response()->json(['message' => 'This device is already in use. Login not allowed.'], 403);
+        if (!$authUser) {
+            return response()->json(['message' => 'User not found.'], 404);
         }
 
-        if(!(Auth::attempt(['email'=> $request['email'], 'password' => $request['password']]))){
-            return false;
+        // Check if the provided device ID is already assigned to another user
+        $existingUserWithDevice = User::where('device_id', $request->device_id)->where('id', '!=', $authUser->id)->first();
+        if ($existingUserWithDevice) {
+            return response()->json(['message' => 'This device is already registered to another user.'], 403);
         }
 
-        $authUser = Auth::user();
+        // Verify credentials
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return response()->json(['message' => 'Invalid email or password.'], 403);
+        }
 
-        // if ($authUser->device_id) {
-        //     return response()->json(['message' => 'This account is already linked to another device.'], 403);
-        // }
+        // If the user already has a registered device and it's different, deny login
+        if ($authUser->device_id && $authUser->device_id !== $request->device_id) {
+            return response()->json(['message' => 'Login denied. This account is linked to another device.'], 403);
+        }
 
+        // If no device is linked, assign this device ID
         if (!$authUser->device_id) {
             $authUser->update(['device_id' => $request->device_id]);
         }
-        
+
+        // Generate access token
         $token = $authUser->createToken('token')->accessToken;
 
         $user = [
@@ -67,6 +82,7 @@ class AuthService
         ];
         return $user;
     }
+
 
     /**
      * Summary of userProfile

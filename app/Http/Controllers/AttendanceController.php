@@ -14,7 +14,7 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        return view('attendance_user_system/login');
     }
 
     /**
@@ -70,6 +70,20 @@ class AttendanceController extends Controller
             'error' => true,
             'message' => 'You are outside the allowed attendance area.',
             'distance' => $distance,
+        ], 403);
+    }
+
+     // Prevent duplicate entries within 12 hours
+     $recentAttendance = Attendance::where('user_id', $request->user_id)
+     ->where('created_at', '>=', now()->subHours(12))
+     ->exists();
+
+    if ($recentAttendance) {
+        \Log::info('Attendance entry blocked - Duplicate within 12 hours', ['user_id' => $request->user_id]);
+
+        return response()->json([
+            'error' => true,
+            'message' => 'Attendance already recorded within the past 12 hours.',
         ], 403);
     }
 
