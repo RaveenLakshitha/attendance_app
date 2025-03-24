@@ -115,12 +115,12 @@
             let token = localStorage.getItem('authToken');
             if (!token) {
                 alert('User not authenticated. Redirecting to login.');
-                window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
                 return;
             }
 
             $.ajax({
-                url: 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/auth/profile',
+                url: 'https://attendance-app-main-bzzr3a.laravel.cloud/api/auth/profile',
                 type: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function(response) {
@@ -133,14 +133,14 @@
                 error: function() {
                     alert('Failed to fetch profile data. Please login again.');
                     localStorage.removeItem('authToken');
-                    window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                    window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
                 }
             });
         }
 
         function logout() {
             localStorage.removeItem('authToken');
-            window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+            window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
         }
 
         async function getLocation() {
@@ -209,11 +209,11 @@
                 let token = localStorage.getItem('authToken');
                 if (!token) {
                     alert('User not authenticated. Redirecting to login.');
-                    window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                    window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
                     return;
                 }
 
-                let response = await fetch("http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/attendance", {
+                let response = await fetch("https://attendance-app-main-bzzr3a.laravel.cloud/api/attendance", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
