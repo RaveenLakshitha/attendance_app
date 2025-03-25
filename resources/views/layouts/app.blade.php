@@ -139,10 +139,10 @@
                             <img src="{{ Storage::url(Auth::user()->profile_picture) }}" 
                                  class="rounded-circle mb-2" 
                                  alt="User Avatar" 
-                                 style="width: 80px; height: 80px; object-fit: cover;">
+                                 style="width: 80px; height: 80px; object-fit: cover; border: 2px solid black;">
                         @else
                             <div class="rounded-circle mb-2 d-flex align-items-center justify-content-center bg-light" 
-                                 style="width: 80px; height: 80px;">
+                                 style="width: 80px; height: 80px;border: 2px solid black;">
                                 <!-- Font Awesome icon fallback -->
                                 <i class="fas fa-user fa-2x text-secondary"></i>
                                 
