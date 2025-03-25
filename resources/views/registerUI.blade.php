@@ -31,7 +31,7 @@
         #register-box {
             max-width: 420px;
             width: 100%;
-            padding: 40px;
+            padding: 20px;
             background-color: #ffffff;
             border-radius: 16px;
             box-shadow: var(--card-shadow);
@@ -201,7 +201,7 @@
                         </div>
                         <div id="error-msg" class="text-center"></div>
                         <div class="mb-3 d-grid">
-                            <button type="button" class="btn btn-secondary" onclick="window.location.href='https://attendance-app-main-bzzr3a.laravel.cloud/loginUI'">
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI'">
                                 <i class="fas fa-sign-in-alt"></i> Back to Login
                             </button>
                         </div>
@@ -229,14 +229,14 @@
             registerBtn.prop('disabled', true);
             
             $.ajax({
-                url: 'https://attendance-app-main-bzzr3a.laravel.cloud/api/auth/register',
+                url: 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/auth/register',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ name: name, email: email, password: password, device_id: deviceId }),
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('Registration successful! Please log in.');
-                        window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
+                        window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
                     }
                 },
                 error: function(xhr) {
