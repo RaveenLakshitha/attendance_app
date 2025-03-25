@@ -518,7 +518,6 @@ function stopCamera() {
                 type: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function(response) {
-                    console.log(response);
                     $('#user-name-header').text(response.data.name || 'User');
                     $('#user-email').text(response.data.email || 'N/A');
                     $('#employee-id').val(response.data.id);
@@ -526,8 +525,6 @@ function stopCamera() {
                         const profileContainer = document.getElementById('profile-picture-header');
                         // Clear previous content
                         profileContainer.innerHTML = '';
-
-                        
                         if (response.data.profile_picture) {
                             // Create image with storage path prefix
                             const img = document.createElement('img');

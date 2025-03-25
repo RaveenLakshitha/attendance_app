@@ -12,6 +12,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .table-hover tbody tr:hover {
             background-color: #f8f9fa;
@@ -134,10 +135,28 @@
                 <!-- Sidebar (Visible on Desktop) -->
                 <div class="col-md-3 col-lg-2 bg-white sidebar p-3 shadow-sm border-end d-none d-md-block">
                     <div class="d-flex flex-column align-items-center text-center py-3">
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
-                             class="rounded-circle mb-2" 
-                             alt="User Avatar" 
-                             style="width: 80px; height: 80px; object-fit: cover;">
+                        @if(Auth::user()->profile_picture && file_exists(public_path('storage/' . Auth::user()->profile_picture)))
+                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
+                                 class="rounded-circle mb-2" 
+                                 alt="User Avatar" 
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                        @else
+                            <div class="rounded-circle mb-2 d-flex align-items-center justify-content-center bg-light" 
+                                 style="width: 80px; height: 80px;">
+                                <!-- Font Awesome icon fallback -->
+                                <i class="fas fa-user fa-2x text-secondary"></i>
+                                
+                                <!-- OR use a default image -->
+                                <!-- <img src="{{ asset('images/default-profile.png') }}" 
+                                     class="rounded-circle" 
+                                     alt="Default Avatar"
+                                     style="width: 80px; height: 80px; object-fit: cover;"> -->
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Welcome</h5>
+                                <h4 class="font-weight-bold text-primary">{{ Auth::user()->name }}</h4>
+                            </div>
+                        @endif
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
