@@ -627,7 +627,7 @@ function stopCamera() {
                     },
                     { 
                         enableHighAccuracy: true, 
-                        timeout: 10000,
+                        timeout: 30000,
                         maximumAge: 0
                     }
                 );
