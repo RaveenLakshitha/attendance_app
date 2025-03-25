@@ -36,7 +36,6 @@
             border-radius: 16px;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
         }
         
         .login-header {
