@@ -37,6 +37,7 @@
         .container {
             background: #ffffff;
             padding: 40px;
+            padding-top: 150px;
             border-radius: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255, 255, 255, 0.2);
