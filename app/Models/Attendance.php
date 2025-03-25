@@ -10,7 +10,7 @@ class Attendance extends Model
     use HasFactory;
 
     // ✅ Allow mass assignment for these fields
-    protected $fillable = ['user_id', 'latitude', 'longitude', 'checked_in_at'];
+    protected $fillable = ['user_id', 'latitude', 'longitude', 'checked_in_at', 'photo_path'];
 
     /**
      * Function: user

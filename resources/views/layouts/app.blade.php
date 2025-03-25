@@ -134,7 +134,7 @@
                 <!-- Sidebar (Visible on Desktop) -->
                 <div class="col-md-3 col-lg-2 bg-white sidebar p-3 shadow-sm border-end d-none d-md-block">
                     <div class="d-flex flex-column align-items-center text-center py-3">
-                        <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?ga=GA1.1.592228293.1740760010&semt=ais_hybrid" 
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
                              class="rounded-circle mb-2" 
                              alt="User Avatar" 
                              style="width: 80px; height: 80px; object-fit: cover;">

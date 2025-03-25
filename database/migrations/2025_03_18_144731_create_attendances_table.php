@@ -14,9 +14,10 @@ return new class extends Migration
     Schema::create('attendances', function (Blueprint $table) {
         $table->id();
         $table->foreignId('user_id');
-        $table->decimal('latitude', 10, 8)->nullable();  // Adjust precision if needed
-        $table->decimal('longitude', 11, 8)->nullable(); // Adjust precision if needed
+        $table->decimal('latitude', 10, 8)->nullable();
+        $table->decimal('longitude', 11, 8)->nullable();
         $table->timestamp('checked_in_at')->nullable();
+        $table->string('photo_path')->nullable(); // Stores the path to the photo
         $table->timestamps();
     });
 }

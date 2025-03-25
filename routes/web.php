@@ -6,11 +6,6 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-
 Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -49,3 +44,6 @@ Route::get('/registerUI', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::post('/users/{user}/upload-profile-picture', [UserController::class, 'uploadProfilePicture'])
+    ->name('users.uploadProfilePicture');

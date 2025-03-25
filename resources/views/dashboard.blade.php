@@ -37,7 +37,6 @@
         .container {
             background: #ffffff;
             padding: 40px;
-            padding-top: 150px;
             border-radius: 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -73,7 +72,6 @@
         h4 {
             color: var(--primary-color);
             font-weight: 500;
-            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -97,6 +95,32 @@
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
         }
         
+        .camera-section {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .camera-preview-container {
+            width: 100%;
+            height: 200px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .camera-preview-container video,
+        .camera-preview-container img {
+            object-fit: cover;
+            height: 100%;
+        }
         button:hover {
             background: linear-gradient(135deg, var(--primary-hover) 0%, #3a56d4 100%);
             transform: translateY(-2px);
@@ -259,27 +283,35 @@
             padding: 10px;
         }
 
-.check-in-btn:hover {
-    background: linear-gradient(135deg, var(--primary-hover) 0%, #3a56d4 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
-}
+    .check-in-btn:hover {
+        background: linear-gradient(135deg, var(--primary-hover) 0%, #3a56d4 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+    }
 
-.check-in-btn i {
-    font-size: 32px;
-}
+    .check-in-btn i {
+        font-size: 32px;
+    }
 
-.btn-text {
-    font-size: 14px;
-    display: block;
-}
+    .btn-text {
+        font-size: 14px;
+        display: block;
+    }
 
-/* For smaller screens */
-@media (max-width: 480px) {
+    /* For smaller screens */
+    @media (max-width: 750px) {
+
+        body {
+            padding-top: 250px;
+        }
+        .container {
+            padding-top: 10px;
+        }
     .check-in-btn {
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
         margin: 50px auto auto auto;
+        padding-bottom: 10px;
     }
     
     .check-in-btn i {
@@ -294,7 +326,9 @@
 </head>
 <body>
     <div class="container">
-        <h3><i class="fas fa-user-circle"></i> Welcome, <span id="user-name-header"></span></h3>
+        <h3> <span id="profile-picture-header">
+            <i class="fas fa-user-circle fa-2x text-secondary"></i>
+        </span> Welcome, <span id="user-name-header"></span></h3>
 
         <div class="date-display" id="current-date"></div>
         <!-- Digital Clock -->
@@ -305,9 +339,24 @@
             <span class="clock-colon">:</span>
             <span id="clock-seconds">00</span>
         </div>
-        <h4><i class="fas fa-calendar-check"></i> Attendance</h4>
         <!-- Attendance Section -->
         <div class="section">
+        <div class="camera-section mb-3">
+    <div class="camera-preview-container">
+        <video id="cameraPreview" autoplay playsinline style="display: none; width: 100%; border-radius: 8px;"></video>
+        <canvas id="photoCanvas" style="display: none;"></canvas>
+        <img id="photoResult" style="display: none; width: 100%; border-radius: 8px;"/>
+    </div>
+    <button id="startCameraBtn" type="button" style="width: 100%;">
+        <i class="fas fa-camera"></i> Start Camera
+    </button>
+    <button id="captureBtn" type="button" style="width: 100%; display: none;">
+        <i class="fas fa-camera-retro"></i> Capture Photo
+    </button>
+    <button id="retakeBtn" type="button" style="width: 100%; display: none;">
+        <i class="fas fa-redo"></i> Retake Photo
+    </button>
+</div>
             <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
             <input type="hidden" id="employee-id" name="employee-id">
             <input type="hidden" id="latitude" name="latitude">
@@ -347,7 +396,96 @@
             getLocation(); // Auto-fetch location when page loads
             updateClock(); // Initialize digital clock
             setInterval(updateClock, 1000); // Update clock every second
+            $(window).on('beforeunload', function() {
+        stopCamera();
+    });
         });
+
+        // Camera variables
+let cameraStream = null;
+let photoDataUrl = null;
+
+// Camera functions
+document.getElementById('startCameraBtn').addEventListener('click', startCamera);
+document.getElementById('captureBtn').addEventListener('click', capturePhoto);
+document.getElementById('retakeBtn').addEventListener('click', retakePhoto);
+
+async function startCamera() {
+    try {
+        showAlert('info', 'Accessing camera...');
+        cameraStream = await navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                facingMode: 'user',
+                width: { ideal: 640 },
+                height: { ideal: 480 }
+            },
+            audio: false 
+        });
+        
+        const videoElement = document.getElementById('cameraPreview');
+        videoElement.srcObject = cameraStream;
+        videoElement.style.display = 'block';
+        
+        document.getElementById('startCameraBtn').style.display = 'none';
+        document.getElementById('captureBtn').style.display = 'block';
+        showAlert('success', 'Camera ready');
+    } catch (error) {
+        console.error('Camera error:', error);
+        showAlert('error', 'Could not access camera: ' + error.message);
+    }
+}
+
+function capturePhoto() {
+    const video = document.getElementById('cameraPreview');
+    const canvas = document.getElementById('photoCanvas');
+    const photoResult = document.getElementById('photoResult');
+    
+    // Set canvas dimensions to match video stream
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    
+    // Draw current video frame to canvas
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // Convert canvas to data URL (JPEG format)
+    photoDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+    
+    // Display the captured photo
+    photoResult.src = photoDataUrl;
+    photoResult.style.display = 'block';
+    video.style.display = 'none';
+    
+    // Show retake button and hide capture button
+    document.getElementById('captureBtn').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'block';
+    
+    showAlert('success', 'Photo captured');
+}
+
+function retakePhoto() {
+    const video = document.getElementById('cameraPreview');
+    const photoResult = document.getElementById('photoResult');
+    
+    photoResult.style.display = 'none';
+    video.style.display = 'block';
+    
+    document.getElementById('captureBtn').style.display = 'block';
+    document.getElementById('retakeBtn').style.display = 'none';
+    
+    photoDataUrl = null;
+}
+
+function stopCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    document.getElementById('cameraPreview').style.display = 'none';
+    document.getElementById('photoResult').style.display = 'none';
+    document.getElementById('startCameraBtn').style.display = 'block';
+    document.getElementById('captureBtn').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'none';
+}
 
         // Digital Clock Function
         function updateClock() {
@@ -380,9 +518,32 @@
                 type: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function(response) {
+                    console.log(response);
                     $('#user-name-header').text(response.data.name || 'User');
                     $('#user-email').text(response.data.email || 'N/A');
                     $('#employee-id').val(response.data.id);
+
+                        const profileContainer = document.getElementById('profile-picture-header');
+                        // Clear previous content
+                        profileContainer.innerHTML = '';
+
+                        
+                        if (response.data.profile_picture) {
+                            // Create image with storage path prefix
+                            const img = document.createElement('img');
+                            img.src = `storage/${response.data.profile_picture}`;
+                            img.alt = 'Profile Picture';
+                            img.className = 'rounded-circle me-2';
+                            img.width = 70;
+                            img.height = 70;
+                            
+                            profileContainer.appendChild(img);
+                        } else {
+                            // Fallback to Font Awesome icon
+                            const icon = document.createElement('i');
+                            icon.className = 'fas fa-user-circle fa-2x me-2 text-secondary';
+                            profileContainer.appendChild(icon);
+                        }
                 },
                 error: function() {
                     showAlert('error', 'Failed to fetch profile data. Please login again.');
@@ -478,61 +639,94 @@
             });
         }
 
-        async function markAttendance() {
-            try {
-                let employeeId = $('#employee-id').val();
-                if (!employeeId) {
-                    showAlert('error', 'User information not loaded. Please refresh the page.');
-                    return;
-                }
+        function formatLocalTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
 
-                // Get the location and wait for it
-                const location = await getLocation();
-                if (!location) {
-                    showAlert('error', 'Cannot mark attendance without location.');
-                    return;
-                }
-
-                let postData = {
-                    user_id: employeeId,
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                };
-
-                let token = localStorage.getItem('authToken');
-                if (!token) {
-                    showAlert('error', 'Session expired. Redirecting to login.');
-                    setTimeout(() => {
-                        window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
-                    }, 1500);
-                    return;
-                }
-
-                showAlert('warning', 'Submitting attendance...');
-                
-                let response = await fetch("http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/attendance", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify(postData),
-                });
-
-                let responseData = await response.json();
-
-                if (response.ok) {
-                    showAlert('success', responseData.message || 'Attendance marked successfully!');
-                } else {
-                    showAlert('error', responseData.message || 'Failed to mark attendance.');
-                }
-            } catch (error) {
-                console.error("Error submitting attendance:", error);
-                showAlert('error', 'Error submitting attendance. Please try again.');
-            }
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
-    </script>
+
+        async function markAttendance() {
+    try {
+        let employeeId = $('#employee-id').val();
+        if (!employeeId) {
+            showAlert('error', 'User information not loaded. Please refresh the page.');
+            return;
+        }
+
+        // Check if photo was taken
+        if (!photoDataUrl) {
+            showAlert('error', 'Please capture your photo first.');
+            return;
+        }
+
+        // Get the location and wait for it
+        const location = await getLocation();
+        if (!location) {
+            showAlert('error', 'Cannot mark attendance without location.');
+            return;
+        }
+
+        // Convert data URL to blob for sending
+        const blob = await (await fetch(photoDataUrl)).blob();
+        // Generate unique filename with timestamp and user ID
+        const now = new Date();
+        const timestamp = now.toISOString().replace(/[:.]/g, '-');
+        const uniqueFilename = `attendance_${employeeId}_${timestamp}.jpg`;
+
+        const checkedInAt = formatLocalTime(now);
+        const checkInTime = now.toISOString();
+        console.log(checkInTime);
+        console.log(checkedInAt);
+
+        let formData = new FormData();
+        formData.append('user_id', employeeId);
+        formData.append('latitude', location.latitude);
+        formData.append('longitude', location.longitude);
+        formData.append('checked_in_at', checkedInAt);
+        formData.append('photo', blob, uniqueFilename);  // Using unique filename here
+
+        let token = localStorage.getItem('authToken');
+        if (!token) {
+            showAlert('error', 'Session expired. Redirecting to login.');
+            setTimeout(() => {
+                window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+            }, 1500);
+            return;
+        }
+
+        showAlert('warning', 'Submitting attendance...');
+        
+        let response = await fetch("http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/attendance", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                'Authorization': 'Bearer ' + token
+            },
+            body: formData,
+        });
+
+        let responseData = await response.json();
+
+        if (response.ok) {
+            showAlert('success', responseData.message || 'Attendance marked successfully!');
+            // Reset camera after successful submission
+            stopCamera();
+            photoDataUrl = null;
+        } else {
+            showAlert('error', responseData.message || 'Failed to mark attendance.');
+        }
+    } catch (error) {
+        console.error("Error submitting attendance:", error);
+        showAlert('error', 'Error submitting attendance. Please try again.');
+    }
+}
+        
+        </script>
 </body>
 </html>
