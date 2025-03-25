@@ -507,13 +507,13 @@ function stopCamera() {
             if (!token) {
                 showAlert('error', 'User not authenticated. Redirecting to login.');
                 setTimeout(() => {
-                    window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                    window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
                 }, 1500);
                 return;
             }
 
             $.ajax({
-                url: 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/auth/profile',
+                url: 'https://attendance-app-main-bzzr3a.laravel.cloud/api/auth/profile',
                 type: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function(response) {
@@ -545,7 +545,7 @@ function stopCamera() {
                     showAlert('error', 'Failed to fetch profile data. Please login again.');
                     localStorage.removeItem('authToken');
                     setTimeout(() => {
-                        window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                        window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
                     }, 1500);
                 }
             });
@@ -555,7 +555,7 @@ function stopCamera() {
             localStorage.removeItem('authToken');
             showAlert('success', 'Logging out...');
             setTimeout(() => {
-                window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
             }, 1000);
         }
 
@@ -690,14 +690,14 @@ function stopCamera() {
         if (!token) {
             showAlert('error', 'Session expired. Redirecting to login.');
             setTimeout(() => {
-                window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
+                window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
             }, 1500);
             return;
         }
 
         showAlert('warning', 'Submitting attendance...');
         
-        let response = await fetch("http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/attendance", {
+        let response = await fetch("https://attendance-app-main-bzzr3a.laravel.cloud/api/attendance", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
