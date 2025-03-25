@@ -213,7 +213,7 @@
                         <div id="err" class="text-center"></div>
                         <div class="divider"></div>
                         <div class="mb-3 d-grid">
-                            <button type="button" class="btn btn-secondary" onclick="window.location.href='https://attendance-app-main-bzzr3a.laravel.cloud/registerUI'">
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='http://localhost/test/Attendance_Sample/AttendanceApplication/public/registerUI'">
                                 <i class="fas fa-user-plus"></i> Create Account
                             </button>
                         </div>
@@ -240,7 +240,7 @@
             loginBtn.prop('disabled', true);
             
             $.ajax({
-                url: 'https://attendance-app-main-bzzr3a.laravel.cloud/api/auth/login',
+                url: 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/auth/login',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ email: email, password: password, device_id: deviceId }),
@@ -248,7 +248,7 @@
                     console.log(response);
                     if (response.data.token) {
                         localStorage.setItem('authToken', response.data.token);
-                        window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/dashboard';
+                        window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/dashboard';
                     }
                 },
                 error: function(xhr) {
