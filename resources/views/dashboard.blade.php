@@ -25,7 +25,7 @@
         }
         
         body {
-            padding-top:350px;
+            padding-top:400px;
             font-family: 'Poppins', sans-serif;
             height: 100vh;
             display: flex;
@@ -153,7 +153,7 @@
             left: 0;
             font-weight: 500;
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -225,16 +225,14 @@
         }
         .date-display {
             font-size: 1.2rem;
-            margin-bottom: 5px;
             color: #555;
         }
 
         .digital-clock {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             font-weight: 500;
             color: var(--primary-color);
-            margin: 20px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -312,7 +310,7 @@
         width: 120px;
         height: 120px;
         margin: 50px auto auto auto;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
     }
     
     .check-in-btn i {
@@ -331,6 +329,7 @@
             <i class="fas fa-user-circle fa-2x text-secondary"></i>
         </span> Welcome, <span id="user-name-header"></span></h3>
 
+        <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
         <div class="date-display" id="current-date"></div>
         <!-- Digital Clock -->
         <div class="digital-clock" id="digitalClock">
@@ -358,7 +357,6 @@
         <i class="fas fa-redo"></i> Retake Photo
     </button>
 </div>
-            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
             <input type="hidden" id="employee-id" name="employee-id">
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
@@ -509,13 +507,13 @@ function stopCamera() {
             if (!token) {
                 showAlert('error', 'User not authenticated. Redirecting to login.');
                 setTimeout(() => {
-                    window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
+                    window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
                 }, 1500);
                 return;
             }
 
             $.ajax({
-                url: 'https://attendance-app-main-bzzr3a.laravel.cloud/api/auth/profile',
+                url: 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/auth/profile',
                 type: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 success: function(response) {
@@ -547,7 +545,7 @@ function stopCamera() {
                     showAlert('error', 'Failed to fetch profile data. Please login again.');
                     localStorage.removeItem('authToken');
                     setTimeout(() => {
-                        window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
+                        window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
                     }, 1500);
                 }
             });
@@ -557,7 +555,7 @@ function stopCamera() {
             localStorage.removeItem('authToken');
             showAlert('success', 'Logging out...');
             setTimeout(() => {
-                window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
+                window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
             }, 1000);
         }
 
@@ -692,14 +690,14 @@ function stopCamera() {
         if (!token) {
             showAlert('error', 'Session expired. Redirecting to login.');
             setTimeout(() => {
-                window.location.href = 'https://attendance-app-main-bzzr3a.laravel.cloud/loginUI';
+                window.location.href = 'http://localhost/test/Attendance_Sample/AttendanceApplication/public/loginUI';
             }, 1500);
             return;
         }
 
         showAlert('warning', 'Submitting attendance...');
         
-        let response = await fetch("https://attendance-app-main-bzzr3a.laravel.cloud/api/attendance", {
+        let response = await fetch("http://localhost/test/Attendance_Sample/AttendanceApplication/public/api/attendance", {
             method: "POST",
             headers: {
                 "Accept": "application/json",

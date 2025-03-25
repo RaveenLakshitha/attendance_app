@@ -41,7 +41,7 @@ class AttendanceController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'checked_in_at' => 'required|date',
-            'photo' => 'required|image|max:2048', // Max 2MB
+            'photo' => 'required|image|max:15048', // Max 2MB
         ]);
 
         // Calculate distance from office
@@ -80,7 +80,7 @@ class AttendanceController extends Controller
             Log::info('Duplicate attendance attempt', ['user_id' => $request->user_id]);
             return response()->json([
                 'error' => true,
-                'message' => 'Attendance already recorded within the past 12 hours.',
+                'message' => 'Already recorded within the past 12 hours.',
             ], 403);
         }
 
