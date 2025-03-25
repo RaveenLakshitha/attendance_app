@@ -136,7 +136,7 @@
                 <div class="col-md-3 col-lg-2 bg-white sidebar p-3 shadow-sm border-end d-none d-md-block">
                     <div class="d-flex flex-column align-items-center text-center py-3">
                         @if(Auth::user()->profile_picture && file_exists(public_path('storage/' . Auth::user()->profile_picture)))
-                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
+                            <img src="{{ Storage::url(Auth::user()->profile_picture) }}" 
                                  class="rounded-circle mb-2" 
                                  alt="User Avatar" 
                                  style="width: 80px; height: 80px; object-fit: cover;">

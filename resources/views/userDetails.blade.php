@@ -34,7 +34,7 @@
                                         <tr>
                                             <td>
                                                 @if($user->profile_picture)
-                                                    <img src="{{ asset('storage/' . $user->profile_picture) }}" 
+                                                <img src="{{ Storage::url($user->profile_picture) }}"
                                                          alt="Profile Picture" 
                                                          class="rounded-circle" 
                                                          width="50" 
