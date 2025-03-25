@@ -32,6 +32,7 @@
             max-width: 420px;
             width: 100%;
             padding: 40px;
+            margin-left: 20px;
             background-color: #ffffff;
             border-radius: 16px;
             box-shadow: var(--card-shadow);
