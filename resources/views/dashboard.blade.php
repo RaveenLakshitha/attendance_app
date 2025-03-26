@@ -82,7 +82,7 @@
         
         button {
             width: 100%;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--primary-color-button) 0%, var(--secondary-color) 100%);
             color: #fff;
             border: none;
             padding: 14px 20px;
