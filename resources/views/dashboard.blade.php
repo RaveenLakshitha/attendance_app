@@ -12,12 +12,13 @@
     <!-- Custom CSS -->
     <style>
         :root {
-            --primary-color: #4361ee;
+            --primary-color-button: #4361ee;
+            --primary-color: #000000;
             --primary-hover: #3a56d4;
             --secondary-color: #3f37c9;
             --accent-color: #4cc9f0;
             --light-bg: #f8f9fa;
-            --card-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.2);
             --success-color: #28a745;
             --error-color: #dc3545;
             --warning-color: #ffc107;
@@ -25,9 +26,10 @@
         }
         
         body {
-            padding-top:400px;
+            padding-top:0;
             font-family: 'Poppins', sans-serif;
-            height: 100vh;
+            height: 100%;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,7 +38,7 @@
         }
         
         .container {
-            background: #ffffff;
+            background: linear-gradient(135deg, #b9cce9 0%, #81a7cc 100%);
             padding: 40px;
             border-radius: 20px;
             box-shadow: var(--card-shadow);
@@ -49,7 +51,6 @@
         
         h3 {
             color: var(--primary-color);
-            margin-bottom: 25px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -264,7 +265,7 @@
             border-radius: 50%;
             
             /* Keep your existing styles */
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: linear-gradient(135deg, var(--primary-color-button) 0%, var(--secondary-color) 100%);
             color: #fff;
             border: none;
             cursor: pointer;
@@ -278,7 +279,7 @@
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
             
             /* Positioning for mobile */
-            margin: 50px auto 10px auto;
+            margin: 70px auto 10px auto;
             padding: 10px;
         }
 
@@ -301,16 +302,15 @@
     @media (max-width: 750px) {
 
         body {
-            padding-top: 250px;
+            padding-top: 0px;
         }
         .container {
-            padding-top: 10px;
+            padding-top: 0px;
         }
     .check-in-btn {
         width: 120px;
         height: 120px;
-        margin: 50px auto auto auto;
-        padding-bottom: 20px;
+        margin: 70px auto auto auto;
     }
     
     .check-in-btn i {
@@ -327,7 +327,10 @@
     <div class="container">
         <h3> <span id="profile-picture-header">
             <i class="fas fa-user-circle fa-2x text-secondary"></i>
-        </span> Welcome, <span id="user-name-header"></span></h3>
+        </h3>
+        <h3> <span id="profile-picture-header">
+            </span> Welcome, <span id="user-name-header"></span>
+        </h3>
 
         <div class="date-display" id="current-date"></div>
         <!-- Digital Clock -->
